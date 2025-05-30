@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Birthday Card</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #121212;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #eee;
+    }
+
+    /* Page load fade-in animation */
+    @keyframes fadeInSlideUp {
+      0% {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes zoomFade {
+      0% {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .modal-content img.show {
+      animation: zoomFade 0.5s ease-out forwards;
+    }
+
+
+    .card {
+      background: #2c2c2c;
+      border: 2px solid #ff69b4;
+      border-radius: 15px;
+      width: 350px;
+      padding: 20px;
+      box-shadow: 0 8px 15px rgba(255, 105, 180, 0.3);
+      text-align: center;
+      position: relative;
+      opacity: 0;
+      animation: fadeInSlideUp 1s ease forwards;
+    }
+
+    h1 {
+      color: #ff85b3;
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: #d9a1c8;
+      font-size: 1.1em;
+      margin-bottom: 20px;
+    }
+
+    button {
+      background-color: #ff69b4;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      font-size: 1em;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #d6336c;
+    }
+
+    button:active {
+      transform: scale(0.95);
+    }
+
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 10;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.7);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 15px;
+      max-width: 90vw;
+      max-height: 90vh;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+      position: relative;
+    }
+
+    #postImage {
+      display: block;
+      max-width: 100%;
+      max-height: 200px;
+      border-radius: 10px;
+    }
+
+    .modal-prize {
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
+      max-width: 90vw;
+      max-height: 90vh;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .modal-content img {
+      max-width: 100%;
+      max-height: 80vh;
+      border-radius: 10px;
+      transform: scale(0.8);
+      opacity: 0;
+      animation-fill-mode: forwards;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 1.5em;
+      font-weight: bold;
+      color: #333;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+    <h1>Happy Birthday!</h1>
+    <p>Wishing you a day filled with love, joy, and wonderful surprises.</p>
+    <button id="openImageBtn">Open Birthday Image</button>
+  </div>
+
+  <div id="imageModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" id="closeModal">&times;</span>
+      <img id="modalImage" src="image.png" alt="Birthday Cake" />
+    </div>
+  </div>
+
+  <div id="prizeModal" class="modal">
+    <div class="modal-prize">
+      <div id="prizeText"
+        style="display:none; font-size: 1.5em; color: #d6336c; font-weight: bold; text-align: center; padding: 20px 20px 20px 20px;">
+        Just Kidding, Here Your Prize
+      </div>
+      <img id="postImage" src="post-image.png" alt="Prize Image"
+        style="display: none; max-width: 100%; max-height: 200px; border-radius: 10px;" />
+      <a id="prizeLink" href="https://link.dana.id/kaget?c=swzuau8re&r=j34RKU" target="_blank"
+        style="display: none; margin-top: 15px; color: blue; font-weight: bold; text-decoration: underline;">
+        Or Just Click Here!
+      </a>
+    </div>
+  </div>
+
+  <script>
+    const openBtn = document.getElementById('openImageBtn');
+    const imageModal = document.getElementById('imageModal');
+    const prizeModal = document.getElementById('prizeModal');
+    const closeImageBtn = document.getElementById('closeModal');
+    const closePrizeBtn = document.getElementById('closePrizeModal');
+    const modalImage = document.getElementById('modalImage');
+    const prizeText = document.getElementById('prizeText');
+    const postImage = document.getElementById('postImage');
+    const prizeLink = document.getElementById('prizeLink');
+
+    openBtn.addEventListener('click', () => {
+      imageModal.style.display = 'flex';
+      prizeModal.style.display = 'none';
+      prizeText.style.display = 'none';
+      postImage.style.display = 'none';
+      prizeLink.style.display = 'none'; // hide initially
+
+      modalImage.style.display = 'block';
+      modalImage.classList.remove('hide');
+      modalImage.classList.add('show');
+
+      setTimeout(() => {
+        imageModal.style.display = 'none';
+
+        prizeText.style.display = 'block';
+        postImage.style.display = 'block';
+        prizeLink.style.display = 'block'; // show after delay
+        prizeModal.style.display = 'flex';
+      }, 3000);
+    });
+
+    function closeModal() {
+      imageModal.style.display = 'none';
+      prizeModal.style.display = 'none';
+      modalImage.classList.remove('show');
+      prizeText.style.display = 'none';
+      postImage.style.display = 'none';
+      prizeLink.style.display = 'none';
+    }
+
+
+    closeImageBtn.addEventListener('click', closeModal);
+    if (closePrizeBtn) closePrizeBtn.addEventListener('click', closeModal);
+
+    // Close modals on clicking outside modal content
+    window.addEventListener('click', (event) => {
+      if (event.target === imageModal || event.target === prizeModal) {
+        closeModal();
+      }
+    });
+  </script>
+
+
+</body>
+
+</html>
